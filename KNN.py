@@ -1,0 +1,2 @@
+class knn(object):
+    pass
