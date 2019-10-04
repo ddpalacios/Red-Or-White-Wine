@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from k_nearest import KNN
 from dataframe import DataFrame  # our class to view and manipulate our data
 
 # lets start by opening our dataset and see what columns (Features) we are dealing with...
