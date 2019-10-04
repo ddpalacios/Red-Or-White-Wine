@@ -11,9 +11,17 @@ class dataFrame():
     def see_info(self):
         print(self.df.info())
 
-    def peek(self, peek):
+    def head(self, peek):
         print(self.df.head(peek))
+
+    def tail(self, peek):
+        print(self.df.tail(peek))
 
     def drop(self, col):
         self.df = self.df.drop([col], axis=1)
         return self.df
+
+    def map_features(self, map, col):
+        self.df[col] = self.df[col].map(map)
+
+
