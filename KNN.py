@@ -52,5 +52,12 @@ class knn(object):
         sorted_votes = sorted(class_votes.items(), key=operator.itemgetter(1), reverse=True)
         return sorted_votes[0][0]
 
+    def accuracy(self, test_set, predictions):
+        correct =0
+        for i in range(len(test_set)):
+            if test_set[i][-1] is predictions[i]:
+                correct +=1
+            return (correct/len(test_set))*100
+
 
 
