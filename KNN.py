@@ -1,4 +1,6 @@
 import math
+import operator
+
 import numpy as np
 class knn(object):
     def __init__(self):
@@ -19,5 +21,23 @@ class knn(object):
             distance += (inst1[i] - inst2[i]) ** 2
 
         return math.sqrt(distance)
+
+    #after we collected the distance of similaritym we can collect
+    #the k most similar instances for a given unseen datapoint
+    #We will name this methood get_neighbors rightfully...
+    def get_neighbors(self, train_set, test_inst, k):
+        distances = []
+        length = len(test_inst) -1
+
+        for i in range(len(train_set)):
+            distance = self.euclidean_dist(test_inst, train_set, length)
+            distances.append((train_set,distance))
+        distances.sort(key=operator.itemgetter(1))
+        neighbors = []
+        for i in range(k):
+            neighbors.append(distances[i][0])
+        return neighbors
+
+
 
 
