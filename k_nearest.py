@@ -23,7 +23,23 @@ unless the # of samples has few dimensions (features)
 So, to start,  lets gather our dataset once again.
 '''
 
+from dataframe import DataFrame  # our class to view and manipulate our data
+df = DataFrame('wineanalysis.csv')
+#again, get rid of column name
+df.drop('Unnamed: 0')
+#and changed our class labels to numeric
+type_map = {
+    'red':1,
+    'white': 0
+}
+df.map_features(type_map,'type')
+df.head()
 
+#We are going to split the data using train_test_split... we just wont use its labels
+#it also split for us.
+from sklearn.model_selection import train_test_split
+X, y = df.select_data_points(start=0, end=12, targ=12)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.03, random_state=0, stratify=y)
 
 
 
