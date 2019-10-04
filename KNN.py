@@ -38,6 +38,19 @@ class knn(object):
             neighbors.append(distances[i][0])
         return neighbors
 
+#Next task is to devise a predicted response based on those neighbors
+#we do this by allowing each neighbor to vote for their own class attribute
+#and take the majority vote as the prediction
+    def get_response(self, neighbors):
+        class_votes = {}
+        for i in range(len(neighbors)):
+            response = neighbors[i][-1]
+            if response in class_votes:
+                class_votes[response] +=1
+            else:
+                class_votes[response] = 1
+        sorted_votes = sorted(class_votes.items(), key=operator.itemgetter(1), reverse=True)
+        return sorted_votes[0][0]
 
 
 
