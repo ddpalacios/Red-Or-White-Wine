@@ -53,9 +53,14 @@ from sklearn.metrics import accuracy_score
 lr = LogisticRegression(solver='lbfgs')
 lr.fit(X_train_std, y_train)
 y_pred = lr.predict(X_test_std)
-print("\nPREDICTED CLASSES:\n{}".format(y_pred))
+print("\nPredicted Labels:\n{}".format(y_pred))
+print("\nActual labels\n", y_test)
 
 # If the asscoiated labels is NOT equal to what was predicted, SUM up the amount that were misclassified
 print("\nMisclassified:", (y_test != y_pred).sum())
 # Now lets use sklearns metric to determine accuracy
 print("\nAccuracy:",  round(accuracy_score(y_test, y_pred) * 100,1))
+
+#99% accurate... but is it?
+
+#Question... How do we know that this accracy is valid?  We will furthur adjust our metrics and models to determine this.
