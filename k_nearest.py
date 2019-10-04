@@ -24,7 +24,9 @@ So, to start,  lets gather our dataset once again.
 '''
 
 from dataframe import DataFrame  # our class to view and manipulate our data
+from KNN import knn
 df = DataFrame('wineanalysis.csv')
+knn = knn()
 #again, get rid of column name
 df.drop('Unnamed: 0')
 #and changed our class labels to numeric
@@ -42,7 +44,7 @@ X, y = df.select_data_points(start=0, end=12, targ=12)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.03, random_state=0, stratify=y)
 
 
-
+# print("\nTrain: \n{}\n\nTest: \n{}".format(X_train, X_test))
 
 
 
