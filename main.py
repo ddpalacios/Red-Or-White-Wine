@@ -4,7 +4,6 @@ from dataframe import DataFrame  # our class to view and manipulate our data
 
 # lets start by opening our dataset and see what columns (Features) we are dealing with...
 df = DataFrame('wineanalysis.csv')
-data_frame = df.df
 
 # We see an col named Unnamed... lets get rid of it...
 df.drop('Unnamed: 0')
@@ -48,19 +47,23 @@ X_test_std = SS.transform(X_test)
 # luckily, we dont have to implement it ourselves, sklearn has it for us as soL
 
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, f1_score
 
-lr = LogisticRegression(solver='lbfgs')
+lr = LogisticRegression(solver='lbfgs', tol=0.1)
 lr.fit(X_train_std, y_train)
 y_pred = lr.predict(X_test_std)
 print("\nPredicted Labels:\n{}".format(y_pred))
 print("\nActual labels\n", y_test)
 
-# If the asscoiated labels is NOT equal to what was predicted, SUM up the amount that were misclassified
-print("\nMisclassified:", (y_test != y_pred).sum())
 # Now lets use sklearns metric to determine accuracy
-print("\nAccuracy:",  round(accuracy_score(y_test, y_pred) * 100,1))
+accuracy = round(accuracy_score(y_test, y_pred) * 100, 1)
+f1 = round(f1_score(y_test, y_pred, average='weighted') * 100, 1)
+print("\nAccuracy: {}\nF1_score: {}".format(accuracy, f1))
 
-#99% accurate... but is it?
+# 99% accurate... but is it?  FOR BOTH DEFUALT AND TWEAKING
+# Question... How do we know that this accracy is valid?  We will furthur adjust our metrics and models to determine this.
 
-#Question... How do we know that this accracy is valid?  We will furthur adjust our metrics and models to determine this.
+
+# If the asscoiated labels is NOT equal to what was predicted, SUM up the amount that were misclassified
+misclassified = (y_test != y_pred).sum()
+print("\nMisclassified: {}".format(misclassified))
