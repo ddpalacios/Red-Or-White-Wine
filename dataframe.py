@@ -27,7 +27,7 @@ class DataFrame():
     def map_features(self, map, col):
         self.df[col] = self.df[col].map(map)
 
-    def select_data_points(self, feat, targ):
-        X = self.df.iloc[:, :feat].values
+    def select_data_points(self, start=0, end=0, targ=0):
+        X = self.df.iloc[:, start:end].values
         y = self.df.iloc[:, targ].values
         return X,y

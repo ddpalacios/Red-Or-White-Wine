@@ -6,7 +6,7 @@ once selected the data, we will figure out if we need to pre-process it.
 We will split the data into 70% training,  15% Development,  15% Tests
 
 
-Then we will think about what the most appropriate evoluation metric is for the dataset (Accurazy VS F1).
+Then we will think about what the most appropriate evaluation metric is for the dataset (Accuracy VS F1).
 
 
 The Specifics:
