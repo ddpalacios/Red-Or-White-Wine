@@ -1,5 +1,6 @@
 import math
 import operator
+import random
 
 import numpy as np
 class knn(object):
@@ -26,31 +27,49 @@ class knn(object):
     #the k most similar instances for a given unseen datapoint
     #We will name this methood get_neighbors rightfully...
     def get_neighbors(self, train_set, test_inst, k):
-        distances = []
-        length = len(test_inst) -1
-
-        for i in range(len(train_set)):
-            distance = self.euclidean_dist(test_inst, train_set, length)
-            distances.append((train_set,distance))
-        distances.sort(key=operator.itemgetter(1))
-        neighbors = []
-        for i in range(k):
-            neighbors.append(distances[i][0])
-        return neighbors
+        distances = np.zeros(train_set.shape[0])
+        for i in range(train_set.shape[0]):
+            distances[i] = self.euclidean_dist(test_inst, train_set, len(test_inst))
+        ind = np.argsort(distances)
+        return (ind[0:k])
+        # distances = []
+        # length = len(test_inst) -1
+        #
+        # for i in range(len(train_set)):
+        #     distance = self.euclidean_dist(test_inst, train_set, length)
+        #     distances.append((train_set,distance))
+        # distances.sort(key=operator.itemgetter(1))
+        # neighbors = []
+        # for i in range(k):
+        #     neighbors.append(distances[i][0])
+        # return neighbors
 
 #Next task is to devise a predicted response based on those neighbors
 #we do this by allowing each neighbor to vote for their own class attribute
 #and take the majority vote as the prediction
-    def get_response(self, neighbors):
-        class_votes = {}
-        for i in range(len(neighbors)):
-            response = neighbors[i][-1]
-            if response in class_votes:
-                class_votes[response] +=1
+    def get_response(self, votes):
+        vote_result = {}
+        for key in votes:
+            if key in vote_result:
+                vote_result[key] += 1
             else:
-                class_votes[response] = 1
-        sorted_votes = sorted(class_votes.items(), key=operator.itemgetter(1), reverse=True)
-        return sorted_votes[0][0]
+                vote_result[key] = 1
+        final_list = []
+        for (number, vote) in vote_result.items():
+            if vote == max(vote_result.values()):
+                final_list.append(number)
+        Winner = random.choice(final_list)
+        return (Winner)
+        # class_votes = {}
+        # for i in range(len(neighbors)):
+        #     response = neighbors[i][-1]
+        #     response= hash(tuple(np.array(response)))
+        #     if response in class_votes:
+        #         class_votes[response] +=1
+        #     else:
+        #         class_votes[response] = 1
+        # sorted_votes = sorted(class_votes.items(), key=operator.itemgetter(1), reverse=True)
+        # return sorted_votes[0][0]
 
     def accuracy(self, test_set, predictions):
         correct =0
