@@ -38,12 +38,31 @@ class KNN(object):
     def __init__(self, k_value):
         self.k = k_value
 
+#Calculate the distance between test data and each row of training data
+    def Euclidean(self, test_data, training_data):
+        length = test_data.shape[1]
+        distance =0
+        for i in range(length):
+            distance+= np.square(test_data[i] - training_data[i])
+        return np.sqrt(distance)
 
-    def distance_metric(self):
-        pass
 
-    def fit(self, X, y):
-        pass
+    def fit(self, X_train, X_test):
+        distances = {}
+        for i in range(len(X_train)):
+            dist = self.Euclidean(X_test, X_train[i])
+            distances[i] = dist[0]
+
+        #Sort calculated distances based on distance values
+        sorted_dist = self.sortDistances(distances)
+
+
+
+
+    def sortDistances(self, distances):
+        sorted_dist = sorted(distances.items(), key=operator.itemgetter(1))
+        return sorted_dist
+
 
     def predict(self, X_test):
         pass
