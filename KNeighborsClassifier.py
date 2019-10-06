@@ -34,11 +34,12 @@ import numpy as np
    in the train set for a given member of the test set and make it 
    into a prediction
    """
-class knn(object):
+class KNN(object):
     def __init__(self, train_set, test_set, k_value):
         self.train_set = train_set
         self.test_set = test_set
         self.k = k_value
+
 
 
 
