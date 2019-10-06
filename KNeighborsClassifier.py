@@ -37,6 +37,8 @@ import numpy as np
 class KNN(object):
     def __init__(self, k_value):
         self.k = k_value
+        self.distances = {}
+        self.neighbors = []
 
 #Calculate the distance between test data and each row of training data
     def Euclidean(self, test_data, training_data):
@@ -48,13 +50,21 @@ class KNN(object):
 
 
     def fit(self, X_train, X_test):
-        distances = {}
         for i in range(len(X_train)):
             dist = self.Euclidean(X_test, X_train[i])
-            distances[i] = dist[0]
+            self.distances[i] = dist[0]
 
         #Sort calculated distances based on distance values
-        sorted_dist = self.sortDistances(distances)
+        sorted_dist = self.sortDistances(self.distances)
+
+        #Extract top k neighbors from sorted dictionary
+        for i in range(self.k):
+            self.neighbors.append(sorted_dist[i][0])
+
+        print(self.neighbors)
+
+
+
 
 
 
