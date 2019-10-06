@@ -35,8 +35,21 @@ import numpy as np
    into a prediction
    """
 class knn(object):
-    def __init__(self):
+    def __init__(self, train_set, test_set, k_value):
+        self.train_set = train_set
+        self.test_set = test_set
+        self.k = k_value
+
+
+
+    def distance_metric(self, ):
         pass
+
+
+
+
+
+
 
 
 
