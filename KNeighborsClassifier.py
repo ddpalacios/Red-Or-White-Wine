@@ -52,6 +52,9 @@ class KNN(object):
 
         return neighbors, tally, final_vote
 
+
+
+
     def Euclidean(self, test_data, training_data, distance):
         # Calculate the distance between test data and each row of training data
         distance += np.square(test_data - training_data)
@@ -87,3 +90,10 @@ class KNN(object):
 
         final_vote, tally = self.sortVotes(votes)
         return final_vote, tally
+
+    def getAccuracy(self, y_test, prediction):
+        correct = 0
+        for i in range(len(y_test)):
+            if y_test[i] is prediction[i]:
+                correct+=1
+        return (correct/len(y_test))
