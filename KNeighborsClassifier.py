@@ -45,40 +45,46 @@ class KNN(object):
 
     # Calculate the distance between test data and each row of training data
     def Euclidean(self, test_data, training_data):
-        length = test_data.shape[1]
         distance = 0
-        for i in range(length):
-            distance += np.square(test_data[i] - training_data[i])
+        for i in range(len(test_data)):
+            distance += np.square(test_data[i] - training_data)
         return np.sqrt(distance)
 
-    def fit(self, X_train, X_test, y_train):
-        for i in range(len(X_train)):
+    def fit(self, X_train, X_test):
+        for i in range(len(X_train)):  # For all the elements in the train data...
             dist = self.Euclidean(X_test, X_train[i])
-            self.distances[i] = dist[0]
 
-        # Sort calculated distances based on distance values
+            self.distances[i] = dist[0] #Why just the first element?
+
+
+
+        # # Sort calculated distances based on distance values
         sorted_dist = self.sortDistances(self.distances)
-
-        # Extract top k neighbors from sorted dictionary
-        for i in range(self.k):
-            self.neighbors.append(sorted_dist[i][0])
+        print(sorted_dist)
 
 
+        # # Extract top k neighbors from sorted dictionary
+        # for i in range(self.k):
+        #     self.neighbors.append(sorted_dist[i][0])
+        #
+        # print(self.neighbors)
 
-
-        # Calculate most frequent class in neighbors
+        # # Calculate most frequent class in neighbors
         for i in range(len(self.neighbors)):
             response = y_train[self.neighbors[i]]
-
             if response in self.votes:
                 self.votes[response] +=1
             else:
                 self.votes[response] = 1
 
-        #sort the votes
-        sort_vote  = sorted(self.votes.items(), key=operator.itemgetter(1), reverse=True)
-        return (sort_vote[0][0], self.neighbors)
 
+
+        # #sort the votes
+        # sort_vote  = sorted(self.votes.items(), key=operator.itemgetter(1), reverse=True)
+        #
+        #
+        #
+        # return (sort_vote[0][0], self.neighbors)
 
     def sortDistances(self, distances):
         sorted_dist = sorted(distances.items(), key=operator.itemgetter(1))
