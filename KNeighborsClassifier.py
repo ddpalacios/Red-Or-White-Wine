@@ -44,51 +44,50 @@ class KNN(object):
         self.votes = {}
 
     # Calculate the distance between test data and each row of training data
-    def Euclidean(self, test_data, training_data):
-        distance = 0
-        for i in range(len(test_data)):
-            distance += np.square(test_data[i] - training_data)
+    def Euclidean(self, test_data, training_data, distance):
+        distance += np.square(test_data - training_data)
         return np.sqrt(distance)
 
-    def fit(self, X_train, X_test):
-        for i in range(len(X_train)):  # For all the elements in the train data...
-            dist = self.Euclidean(X_test, X_train[i])
-
-            self.distances[i] = dist[0] #Why just the first element?
+    def fit(self, X_train, X_test, y_train):
+        distance = 0
+        for row_features in range(X_train.shape[1]):  # for each ROW in the data...
 
 
+            calculated_distance = self.Euclidean(X_test[row_features], X_train[row_features], distance)
 
-        # # Sort calculated distances based on distance values
+
+
+            self.distances[row_features] = calculated_distance[0]
+
+
+    #     # # Sort calculated distances based on distance values
         sorted_dist = self.sortDistances(self.distances)
         print(sorted_dist)
 
-
-        # # Extract top k neighbors from sorted dictionary
-        # for i in range(self.k):
-        #     self.neighbors.append(sorted_dist[i][0])
-        #
-        # print(self.neighbors)
-
-        # # Calculate most frequent class in neighbors
-        for i in range(len(self.neighbors)):
-            response = y_train[self.neighbors[i]]
-            if response in self.votes:
-                self.votes[response] +=1
-            else:
-                self.votes[response] = 1
-
-
-
-        # #sort the votes
-        # sort_vote  = sorted(self.votes.items(), key=operator.itemgetter(1), reverse=True)
-        #
-        #
-        #
-        # return (sort_vote[0][0], self.neighbors)
-
+    #
+    #     # # Extract top k neighbors from sorted dictionary
+    #     for i in range(self.k):
+    #         self.neighbors.append(sorted_dist[i][0])
+    #
+    #     # # Calculate most frequent class in neighbors
+    #     for i in range(len(self.neighbors)):
+    #
+    #         response = y_train[self.neighbors[i]]  # retrieve labels for X_train set
+    #         if response in self.votes:
+    #             self.votes[response] += 1
+    #         else:
+    #             self.votes[response] = 1
+    #
+    #     # #sort the votes
+    #     sort_vote  = sorted(self.votes.items(), key=operator.itemgetter(1), reverse=True)
+    #
+    #
+    #
+    #     return (sort_vote[0][0], self.neighbors)
+    #
     def sortDistances(self, distances):
         sorted_dist = sorted(distances.items(), key=operator.itemgetter(1))
         return sorted_dist
-
-    def predict(self, X_test):
-        pass
+    #
+    # def predict(self, X_test):
+    #     pass
