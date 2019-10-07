@@ -41,8 +41,7 @@ X, y = df.select_data_points(start=0, end=12, targ=12)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.03, random_state=0, stratify=y)
 
 
-knn = KNN(k_value=5)
+knn = KNN(k_value=1)
+neighbors, tally, final_vote = knn.fit(X_train, X_test, y_train)
 
-knn.fit(X_train, X_test, y_train)
-#
-# print(votes, neighbors)
+print("Neighbors: {}\nTally: {}\nFinal Vote: {}".format(neighbors, tally, final_vote))

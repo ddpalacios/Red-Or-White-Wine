@@ -37,15 +37,9 @@ class KNN(object):
         self.k = k_value
         self.distances = {}
 
-    # Calculate the distance between test data and each row of training data
-    def Euclidean(self, test_data, training_data, distance):
-        distance += np.square(test_data - training_data)
-        return np.sqrt(distance)
-
     def fit(self, X_train, X_test, labels):
         distance = 0
         for row_features in range(X_train.shape[1]):  # for each ROW in the data...
-
             calculated_distance = self.Euclidean(X_test[row_features], X_train[row_features], distance)
             self.distances[row_features] = calculated_distance[0]
 
@@ -54,25 +48,32 @@ class KNN(object):
 
         neighbors = self.get_neighbors(sorted_dist)
 
-        sortedVotes = self.get_response_votes(neighbors, labels)
+        final_vote, tally = self.get_response_votes(neighbors, labels)
 
-        return sortedVotes
+        return neighbors, tally, final_vote
 
-
-
+    def Euclidean(self, test_data, training_data, distance):
+        # Calculate the distance between test data and each row of training data
+        distance += np.square(test_data - training_data)
+        return np.sqrt(distance)
 
     def sortDistances(self, distances):
         sorted_dist = sorted(distances.items(), key=operator.itemgetter(1))
         return sorted_dist
+
     def sortVotes(self, votes):
         sort_vote = sorted(votes.items(), key=operator.itemgetter(1), reverse=True)
-        return sort_vote[0][0]
+        final_vote = sort_vote[0][0]
+        tally = sort_vote
+        return final_vote, tally
+
     def get_neighbors(self, sorted_dist):
         neighbors = []
         # Extract top k neighbors from sorted dictionary
         for i in range(self.k):
             neighbors.append(sorted_dist[i][0])
         return neighbors
+
     def get_response_votes(self, neighbors, labels):
         votes = {}
         # Calculate most frequent class in neighbors
@@ -84,5 +85,5 @@ class KNN(object):
             else:
                 votes[response] = 1
 
-        sorted_votes = self.sortVotes(votes)
-        return sorted_votes
+        final_vote, tally = self.sortVotes(votes)
+        return final_vote, tally
