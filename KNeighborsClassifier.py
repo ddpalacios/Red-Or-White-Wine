@@ -91,6 +91,9 @@ class KNN(object):
         final_vote, tally = self.sortVotes(votes)
         return final_vote, tally
 
+    def predict(self):
+        pass
+
     def getAccuracy(self, y_test, prediction):
         correct = 0
         for i in range(len(y_test)):
