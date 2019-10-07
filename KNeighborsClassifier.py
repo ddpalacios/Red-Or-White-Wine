@@ -36,6 +36,8 @@ class KNN(object):
     def __init__(self, k_value):
         self.k = k_value
         self.distances = {}
+        # generate predictions
+        self.predictions = []
 
     def fit(self, X_train, X_test, labels):
         distance = 0
@@ -50,6 +52,7 @@ class KNN(object):
 
         final_vote, tally = self.get_response_votes(neighbors, labels)
 
+        self.predictions.append(final_vote)
         return neighbors, tally, final_vote
 
 
@@ -91,7 +94,7 @@ class KNN(object):
         final_vote, tally = self.sortVotes(votes)
         return final_vote, tally
 
-    def predict(self):
+    def predict(self, X):
         pass
 
     def getAccuracy(self, y_test, prediction):
