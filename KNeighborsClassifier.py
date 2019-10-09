@@ -47,15 +47,13 @@ class KNN(object):
             self.distances[row_features] = calculated_distance[0]
 
         # Sort calculated distances based on distance values
-        sorted_dist = self.sortDistances(self.distances)
+        self.sortDistances(self.distances)
 
-        neighbors = self.get_neighbors(sorted_dist)
+        # neighbors = self.get_neighbors(sorted_dist)
 
-        final_vote, tally = self.get_response_votes(neighbors, self.labels)
+        # final_vote, tally = self.get_response_votes(neighbors, self.labels)
 
-        self.predictions.append(final_vote)
-
-        return self  # neighbors, tally, final_vote
+        return self  # neighbors, tally
 
     def Euclidean(self, test_data, training_data, distance):
         # Calculate the distance between test data and each row of training data
@@ -96,9 +94,10 @@ class KNN(object):
     def predict(self, X):
         pass
 
-    def getAccuracy(self, y_test, prediction):
-        correct = 0
-        for i in range(len(y_test)):
-            if y_test[i] is prediction[i]:
-                correct += 1
-        return correct / len(y_test)
+    def score(self, X_test, y_test):
+        pass
+        # correct = 0
+        # for i in range(len(y_test)):
+        #     if y_test[i] is prediction[i]:
+        #         correct += 1
+        # return correct / len(y_test)

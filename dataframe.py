@@ -1,5 +1,6 @@
+
 import pandas as pd
-import random
+
 # Data view configuration
 pd.set_option('display.width', 320)
 pd.set_option('display.max_columns', 20)

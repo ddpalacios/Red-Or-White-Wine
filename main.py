@@ -60,8 +60,8 @@ accuracy = round(accuracy_score(y_test, y_pred) * 100, 1)
 f1 = round(f1_score(y_test, y_pred, average='weighted') * 100, 1)
 print("\nAccuracy: {}\nF1_score: {}".format(accuracy, f1))
 
-# 99% accurate... but is it?  FOR BOTH DEFUALT AND TWEAKING
-# Question... How do we know that this accracy is valid?  We will furthur adjust our metrics and models to determine this.
+# 99% accurate... but is it?  FOR BOTH DEFUALT AND TWEAKING Question... How do we know that this accracy is valid?
+# We will further adjust our metrics and models to determine this.
 
 
 # If the asscoiated labels is NOT equal to what was predicted, SUM up the amount that were misclassified

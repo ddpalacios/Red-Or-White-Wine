@@ -27,7 +27,7 @@ from dataframe import DataFrame  # our class to view and manipulate our data
 from KNeighborsClassifier import KNN
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
-
+from time import sleep
 
 df = DataFrame('wineanalysis.csv')
 
@@ -40,11 +40,17 @@ df.head()
 X, y = df.select_data_points(start=0, end=12, targ=12)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.03, random_state=0, stratify=y)
 
+knn = KNN(y_train, k_value=10)
+knn.fit(X_train, X_test)
 
 
 
 
-knn = KNN(k_value=10)
-neighbors, tally, final_vote = knn.fit(X_train, X_test, y_train)
+# acc = knn.score(X_test, y_test)
+# print(acc)
+# predicted = knn.predict(X_test)
 
-print("Neighbors: {}\nTally: {}\nFinal Vote: {}".format(neighbors, tally, final_vote))
+# for i in range(len(predicted)):
+#     print("Predicted: ", predicted[i], "Data ", X_test[i], "Actual: ", y_test[i])
+
+# print("Neighbors: {}\nTally: {}\nFinal Vote: {}".format(neighbors, tally, final_vote))
