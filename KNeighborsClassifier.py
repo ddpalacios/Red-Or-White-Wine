@@ -33,13 +33,14 @@ import numpy as np
 
 
 class KNN(object):
-    def __init__(self, k_value):
+    def __init__(self, labels, k_value):
         self.k = k_value
         self.distances = {}
+        self.labels = labels
         # generate predictions
         self.predictions = []
 
-    def fit(self, X_train, X_test, labels):
+    def fit(self, X_train, X_test):
         distance = 0
         for row_features in range(X_train.shape[1]):  # for each ROW in the data...
             calculated_distance = self.Euclidean(X_test[row_features], X_train[row_features], distance)
@@ -50,13 +51,11 @@ class KNN(object):
 
         neighbors = self.get_neighbors(sorted_dist)
 
-        final_vote, tally = self.get_response_votes(neighbors, labels)
+        final_vote, tally = self.get_response_votes(neighbors, self.labels)
 
         self.predictions.append(final_vote)
-        return neighbors, tally, final_vote
 
-
-
+        return self  # neighbors, tally, final_vote
 
     def Euclidean(self, test_data, training_data, distance):
         # Calculate the distance between test data and each row of training data
@@ -101,5 +100,5 @@ class KNN(object):
         correct = 0
         for i in range(len(y_test)):
             if y_test[i] is prediction[i]:
-                correct+=1
-        return (correct/len(y_test))
+                correct += 1
+        return correct / len(y_test)
