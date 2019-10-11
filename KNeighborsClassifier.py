@@ -25,7 +25,7 @@ import operator
 import numpy as np
 
 """in order to make predictions, we need to calculate
-   the similarity betwwen any two given instances
+   the similarity between any two given instances
    This allows us to locate the k most similar data instances
    in the train set for a given member of the test set and make it 
    into a prediction
@@ -33,31 +33,41 @@ import numpy as np
 
 
 class KNN(object):
-    def __init__(self, labels, k_value):
+    def __init__(self, k_value):
         self.k = k_value
-        self.distances = {}
-        self.labels = labels
+        self.distances = []
         # generate predictions
         self.predictions = []
 
-    def fit(self, X_train, X_test):
-        distance = 0
-        for row_features in range(X_train.shape[1]):  # for each ROW in the data...
-            calculated_distance = self.Euclidean(X_test[row_features], X_train[row_features], distance)
-            self.distances[row_features] = calculated_distance[0]
+    def fit(self, X_train, X_test_rows, labels):
 
-        # Sort calculated distances based on distance values
-        self.sortDistances(self.distances)
-
+        test_row_length = len(X_test_rows) - 1  # Not including lables
+        for each_train_row in range(len(X_train)):
+            calculated_distance = self.Euclidean(X_test_rows, X_train[each_train_row],test_row_length)
+            self.distances.append((X_train[each_train_row], calculated_distance))
+        self.distances.sort(key=operator.itemgetter(1))
+        print(self.distances)
+        # for row_features in range(X_train.shape[1]):  # for each ROW in the data...
+        #     print(X_test[row_features])
+        #     print()
+        #     calculated_distance = self.Euclidean(X_test[row_features], X_train[row_features], distance)
+        #     self.distances[row_features] = calculated_distance[0]
+        #
+        # # Sort calculated distances based on distance values
+        # sorted_dist = self.sortDistances(self.distances)
+        #
         # neighbors = self.get_neighbors(sorted_dist)
+        #
+        # final_vote, tally = self.get_response_votes(neighbors, labels)
+        #
+        # self.predictions.append(final_vote)
+        # return neighbors, tally, final_vote
 
-        # final_vote, tally = self.get_response_votes(neighbors, self.labels)
-
-        return self  # neighbors, tally
-
-    def Euclidean(self, test_data, training_data, distance):
+    def Euclidean(self, test_data, training_data, test_row_length):
+        distance = 0
         # Calculate the distance between test data and each row of training data
-        distance += np.square(test_data - training_data)
+        for each_elem in range(test_row_length):
+            distance += np.square(test_data[each_elem] - training_data[each_elem])
         return np.sqrt(distance)
 
     def sortDistances(self, distances):
@@ -91,13 +101,5 @@ class KNN(object):
         final_vote, tally = self.sortVotes(votes)
         return final_vote, tally
 
-    def predict(self, X):
+    def predict(self, X_test):
         pass
-
-    def score(self, X_test, y_test):
-        pass
-        # correct = 0
-        # for i in range(len(y_test)):
-        #     if y_test[i] is prediction[i]:
-        #         correct += 1
-        # return correct / len(y_test)
