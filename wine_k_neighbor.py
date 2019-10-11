@@ -33,9 +33,17 @@ df.head()
 # We are going to split the data using train_test_split.
 X, y = df.select_data_points(start=0, end=12, targ=12)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.03, random_state=0, stratify=y)
-knn = KNN(k_value=10)
+knn = KNN(k_value=50)
+predictions = []
+for i in y_train:
+    print(i)
 for each_row in range(len(X_test)):
-    knn.fit(X_train, X_test[each_row], y_train)
+    res, tally = knn.fit(X_train, X_test[each_row], y_train)
+    predictions.append(res)
+    print('> predicted=' + repr(res) + 'Tally=' + repr(tally))  # + ', actual=' + repr(y_train[]))
+
+# accuracy = getAccuracy(testSet, predictions)
+# print('Accuracy: ' + repr(accuracy) + '%')
 
 
 # neighbors, tally, final_vote = knn.fit(X_train, X_test, y_train)

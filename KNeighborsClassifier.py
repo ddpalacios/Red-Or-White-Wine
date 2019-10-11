@@ -43,10 +43,15 @@ class KNN(object):
 
         test_row_length = len(X_test_rows) - 1  # Not including lables
         for each_train_row in range(len(X_train)):
-            calculated_distance = self.Euclidean(X_test_rows, X_train[each_train_row],test_row_length)
+            calculated_distance = self.Euclidean(X_test_rows, X_train[each_train_row], test_row_length)
             self.distances.append((X_train[each_train_row], calculated_distance))
         self.distances.sort(key=operator.itemgetter(1))
-        print(self.distances)
+        neighbors = self.get_neighbors(self.distances)
+
+        final_vote, tally = self.get_response_votes(neighbors, labels)
+
+        return final_vote, tally
+
         # for row_features in range(X_train.shape[1]):  # for each ROW in the data...
         #     print(X_test[row_features])
         #     print()
@@ -87,11 +92,14 @@ class KNN(object):
             neighbors.append(sorted_dist[i][0])
         return neighbors
 
-    def get_response_votes(self, neighbors, labels):
+    def get_response_votes(self, neighbors, train_labels):
         votes = {}
         # Calculate most frequent class in neighbors
-        for i in range(len(neighbors)):
-            response = labels[neighbors[i]]  # retrieve labels for X_train set
+
+        for idx, elem in enumerate(neighbors):
+            response = train_labels[idx]  # retrieve labels for X_train set
+            print(elem[0], train_labels[idx])
+            print()
             if response in votes:
                 votes[response] += 1
 
