@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from dataframe import DataFrame  # our class to view and manipulate our data
+from KNeighborsClassifier import KNN
 
 # lets start by opening our dataset and see what columns (Features) we are dealing with...
 df = DataFrame('wineanalysis.csv')
@@ -44,26 +45,50 @@ X_test_std = SS.transform(X_test)
 # However, we will test both metrics and see what will be their differences
 
 # Our first model we will be testing this data with is AdalineGD (Logistic Regression)
-# luckily, we dont have to implement it ourselves, sklearn has it for us as soL
+# luckily, we dont have to implement it ourselves, sklearn has it for us as so,
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, f1_score
 
 lr = LogisticRegression(solver='lbfgs', tol=0.1)
+print("\t\t\t\t---USING LOGISTIC REGRESSION TO 'TRAIN' DATA---\n\n")
 lr.fit(X_train_std, y_train)
 y_pred = lr.predict(X_test_std)
-print("\nPredicted Labels:\n{}".format(y_pred))
-print("\nActual labels\n", y_test)
 
 # Now lets use sklearns metric to determine accuracy
-accuracy = round(accuracy_score(y_test, y_pred) * 100, 1)
-f1 = round(f1_score(y_test, y_pred, average='weighted') * 100, 1)
-print("\nAccuracy: {}\nF1_score: {}".format(accuracy, f1))
+accuracy = accuracy_score(y_test, y_pred) * 100
+f1 = f1_score(y_test, y_pred, average='weighted') * 100
 
-# 99% accurate... but is it?  FOR BOTH DEFUALT AND TWEAKING Question... How do we know that this accracy is valid?
+# 98% accurate... but is it?  FOR BOTH DEFAULT AND TWEAKING Question... How do we know that this accuracy is valid?
 # We will further adjust our metrics and models to determine this.
 
 
-# If the asscoiated labels is NOT equal to what was predicted, SUM up the amount that were misclassified
+# If the associated labels is NOT equal to what was predicted, SUM up the amount that were misclassified
 misclassified = (y_test != y_pred).sum()
 print("\nMisclassified: {}".format(misclassified))
+print("\t\t\t\t---USING KNN TO 'TRAIN' DATA---\n\n")
+knn = KNN(k_value=10)
+predictions = []
+
+X_train = X_train[:1000]
+y_train = y_train[:1000]
+for each_row in range(len(X_test)):
+    res, tally = knn.fit(X_train, X_test[each_row], y_train)
+    predictions.append(res)
+    # print('> predicted=' + repr(res) + 'Tally=' + repr(tally))  # + ', actual=' + repr(y_train[]))
+
+Knn_accuracy = knn.getAccuracy(X_test, y_test, predictions)
+
+print("\n\nSklean Logistic Regression:\nAccuracy metric --> {}%\nF1 Score Metric --> {}%\n\nKNN implementation:\n"
+      "Accuaracy Metric --> {}%".format(accuracy, f1, Knn_accuracy))
+
+best_score = max(accuracy, f1, Knn_accuracy)
+print("\nBest Score from all models and metrics: {}%".format(best_score))
+if best_score == accuracy:
+    print("From Sklearn Logistic Regression ACCURACY ")
+
+if best_score == f1:
+    print("From Sklearn Logistic Regression F1 ")
+
+if best_score == Knn_accuracy:
+    print("KNN implementation ACCURACY")
