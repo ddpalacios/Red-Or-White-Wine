@@ -41,7 +41,7 @@ class KNN(object):
 
     def fit(self, X_train, X_test_rows, labels):
 
-        test_row_length = len(X_test_rows) - 1  # Not including lables
+        test_row_length = len(X_test_rows)
         for each_train_row in range(len(X_train)):
             calculated_distance = self.Euclidean(X_test_rows, X_train[each_train_row], test_row_length)
             self.distances.append((X_train[each_train_row], calculated_distance))
@@ -51,22 +51,6 @@ class KNN(object):
         final_vote, tally = self.get_response_votes(neighbors, labels)
 
         return final_vote, tally
-
-        # for row_features in range(X_train.shape[1]):  # for each ROW in the data...
-        #     print(X_test[row_features])
-        #     print()
-        #     calculated_distance = self.Euclidean(X_test[row_features], X_train[row_features], distance)
-        #     self.distances[row_features] = calculated_distance[0]
-        #
-        # # Sort calculated distances based on distance values
-        # sorted_dist = self.sortDistances(self.distances)
-        #
-        # neighbors = self.get_neighbors(sorted_dist)
-        #
-        # final_vote, tally = self.get_response_votes(neighbors, labels)
-        #
-        # self.predictions.append(final_vote)
-        # return neighbors, tally, final_vote
 
     def Euclidean(self, test_data, training_data, test_row_length):
         distance = 0
@@ -96,10 +80,10 @@ class KNN(object):
         votes = {}
         # Calculate most frequent class in neighbors
 
-        for idx, elem in enumerate(neighbors):
-            response = train_labels[idx]  # retrieve labels for X_train set
-            print(elem[0], train_labels[idx])
-            print()
+        neighbors = np.column_stack((neighbors, train_labels[:len(neighbors)]))
+
+        for i in range(len(neighbors)):
+            response = neighbors[i][-1]  # retrieve labels for X_train set
             if response in votes:
                 votes[response] += 1
 
@@ -109,5 +93,11 @@ class KNN(object):
         final_vote, tally = self.sortVotes(votes)
         return final_vote, tally
 
-    def predict(self, X_test):
-        pass
+    def getAccuracy(self, X_test, labels, predictions):
+        correct = 0
+        test = np.column_stack((X_test, labels))
+
+        for i in range(len(X_test)):
+            if test[i][-1] == predictions[i]:
+                correct += 1
+        return correct / float(len(test)) * 100
