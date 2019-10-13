@@ -50,7 +50,7 @@ X_test_std = SS.transform(X_test)
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, f1_score
 
-lr = LogisticRegression(solver='lbfgs', tol=0.1)
+lr = LogisticRegression(solver='lbfgs', C=1)
 print("\t\t\t\t---USING LOGISTIC REGRESSION TO 'TRAIN' DATA---\n\n")
 lr.fit(X_train_std, y_train)
 y_pred = lr.predict(X_test_std)
@@ -75,7 +75,7 @@ y_train = y_train[:1000]
 for each_row in range(len(X_test)):
     res, tally = knn.fit(X_train, X_test[each_row], y_train)
     predictions.append(res)
-    # print('> predicted=' + repr(res) + 'Tally=' + repr(tally))  # + ', actual=' + repr(y_train[]))
+    # print('> predicted=' + repr(res) + 'Tally=' + repr(tally)) + ', actual=' + repr(y_train[]))
 
 Knn_accuracy = knn.getAccuracy(X_test, y_test, predictions)
 
