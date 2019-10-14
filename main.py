@@ -1,11 +1,10 @@
-import numpy as np
-import matplotlib.pyplot as plt
+
 from dataframe import DataFrame  # our class to view and manipulate our data
 from KNeighborsClassifier import KNN
 
 # lets start by opening our dataset and see what columns (Features) we are dealing with...
 df = DataFrame('wineanalysis.csv')
-
+print(df.df.shape)
 # We see an col named Unnamed... lets get rid of it...
 df.drop('Unnamed: 0')
 
@@ -50,7 +49,21 @@ X_test_std = SS.transform(X_test)
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, f1_score
 
-lr = LogisticRegression(solver='lbfgs', C=1)
+lr = LogisticRegression(penalty= "l2",
+                        dual=False,
+                        tol=.01,
+                        C=1.0,
+                        fit_intercept=True,
+                        intercept_scaling=1,
+                        class_weight=None,
+                        random_state=None,
+                        solver= "lbfgs",
+                        max_iter=50,
+                        multi_class= "warn",
+                        verbose=0,
+                        warm_start=True,
+                        n_jobs=None,
+                        l1_ratio=None)
 print("\t\t\t\t---USING LOGISTIC REGRESSION TO 'TRAIN' DATA---\n\n")
 lr.fit(X_train_std, y_train)
 y_pred = lr.predict(X_test_std)
