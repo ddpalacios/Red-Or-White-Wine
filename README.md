@@ -26,6 +26,8 @@ Based of Python 3
 
 To run, type in terminal --> python3 main.py
 
+NOTE: KNN model will take a minute to fully "train"
+
 3rd party installments:
 
 Numpy & Pandas
