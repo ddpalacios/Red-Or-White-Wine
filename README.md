@@ -22,12 +22,10 @@ possible performance on the development set
 4) finally, we will compare our best model in step 2 to our best KNN model by evaluating them on our test set
 
 
-Based of Python3
+Based of Python 3 
 
-To run:
+To run, type in terminal --> python3 main.py
 
-python3 main.py
+3rd party installments:
 
-Installments:
-
--numpy
+Numpy & Pandas
